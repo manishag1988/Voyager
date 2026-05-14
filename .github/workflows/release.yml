@@ -56,4 +56,4 @@ jobs:
           releaseBody: 'See the attached assets for the latest installers.'
           releaseDraft: true
           prerelease: false
-          args: ${{ matrix.platform == 'macos-latest' && '--target aarch64-apple-darwin --target x86_64-apple-darwin' || '' }}
+          args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
