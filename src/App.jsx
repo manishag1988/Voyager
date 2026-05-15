@@ -323,6 +323,8 @@ export default function App() {
             {tab==="tools"     && <ToolsTab     trip={trip} updateTrip={updateTrip} currency={currency} />}
           </>
         )}
+          </>
+        )}
       </main>
       <InstallBanner />
     </div>
