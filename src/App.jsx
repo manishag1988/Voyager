@@ -251,6 +251,9 @@ export default function App() {
             <span style={{ fontSize:18, fontWeight:800, letterSpacing:"-0.5px" }}>Voyager</span>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            {!window.__TAURI__ && (
+              <button onClick={() => setIsLanding(true)} style={{ background:"transparent", border:"none", color:"rgba(255,255,255,0.6)", cursor:"pointer", fontSize:13, fontWeight:600 }}>Home</button>
+            )}
             <button onClick={() => setShowSettings(!showSettings)} style={{ background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:8, padding:"6px 10px", color:"#fff", cursor:"pointer", fontSize:14, display:"flex", alignItems:"center", gap:6 }}>
               ⚙️ {showSettings ? "Close" : "Settings"}
             </button>
