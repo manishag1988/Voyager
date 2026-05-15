@@ -16,8 +16,8 @@ export default defineConfig({
         background_color: '#0f2027',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '/',
-        scope: '/',
+        start_url: process.env.IS_GITHUB_PAGES === 'true' ? '/Voyager/' : './',
+        scope: process.env.IS_GITHUB_PAGES === 'true' ? '/Voyager/' : './',
         icons: [
           {
             src: 'icons/icon-72.png',
@@ -80,8 +80,8 @@ export default defineConfig({
       }
     })
   ],
-  // Required for Tauri: use relative paths
-  base: './',
+  // Dynamic base path: Use /Voyager/ for GitHub Pages, ./ for Tauri/Local
+  base: process.env.IS_GITHUB_PAGES === 'true' ? '/Voyager/' : './',
   build: {
     outDir: 'dist',
     // Tauri uses the dist folder

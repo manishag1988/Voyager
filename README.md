@@ -22,9 +22,11 @@ Voyager is a premium, privacy-focused travel companion built for adventurers who
 Download the latest installer for your operating system from the [Releases Page](https://github.com/manishag1988/Voyager/releases).
 
 ### Mobile & Web (PWA)
-1. Download the `Voyager_PWA.tar.gz` from the latest release.
-2. Host it on any static server (or open the hosted version).
-3. Select **"Add to Home Screen"** on your iPhone or Android to use it as a native app!
+The app is live at: **[https://manishag1988.github.io/Voyager/](https://manishag1988.github.io/Voyager/)**
+
+1. Open the link on your iPhone (Safari) or Android (Chrome).
+2. Select **"Add to Home Screen"** to use it as a native app!
+3. Alternatively, download the `Voyager_PWA.tar.gz` from the latest release to host it yourself.
 
 ## 🛠️ Built With
 
