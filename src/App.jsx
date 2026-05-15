@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { getTrialStatus, validateLicenseKey, saveLicenseLocally, deactivateApp, getSavedLicense } from "./lib/licensing";
+import LandingPage from "./components/LandingPage";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -210,6 +211,7 @@ export default function App() {
   const [currency,    setCurrency]    = useLocalStorage("ta_currency", "INR ₹");
   const [showNewTrip, setShowNewTrip] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isLanding, setIsLanding] = useState(!window.__TAURI__ && trips.length === 0);
   const [newTrip,     setNewTrip]     = useState({ name:"", from:"", to:"", destination:"" });
 
   const trip = trips.find(t => t.id === activeTrip);
@@ -230,6 +232,10 @@ export default function App() {
 
   function updateTrip(patch) {
     setTrips(prev => prev.map(t => t.id === activeTrip ? { ...t, ...patch } : t));
+  }
+
+  if (isLanding) {
+    return <LandingPage onLaunch={() => setIsLanding(false)} />;
   }
 
   return (

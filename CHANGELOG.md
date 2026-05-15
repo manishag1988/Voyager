@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v1.0.12] - 2026-05-15
+## [v1.0.13] - 2026-05-15
 ### Added
-- Created a professional `README.md` for the repository.
-- Added `CHANGELOG.md` to track version history.
-- Integrated automated release notes extraction into the CI/CD pipeline.
+- Launched a premium marketing landing page for the web version.
+- Implemented smart redirection: New web users see the landing page, while desktop and existing users go straight to the app.
+- Added pricing plans, feature grids, and download links to the homepage.
 
 ## [v1.0.10] - 2026-05-15
 ### Fixed
