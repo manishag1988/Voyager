@@ -20,6 +20,7 @@ export default function LandingPage({ onLaunch }) {
   const buyLink = "https://voyager-manish.lemonsqueezy.com/checkout/buy/c69b2362-113d-44f5-93a2-d35fd1fca250";
   const repoUrl = "https://github.com/manishag1988/Voyager";
   
+  const [latestVersion, setLatestVersion] = useState('v1.0.20');
   const [downloads, setDownloads] = useState({
     win: `${repoUrl}/releases/latest`,
     mac: `${repoUrl}/releases/latest`,
@@ -30,6 +31,7 @@ export default function LandingPage({ onLaunch }) {
     fetch('https://api.github.com/repos/manishag1988/Voyager/releases/latest')
       .then(res => res.json())
       .then(data => {
+        if (data.tag_name) setLatestVersion(data.tag_name);
         if (data.assets) {
           const win = data.assets.find(a => a.name.endsWith('.msi'))?.browser_download_url;
           const mac = data.assets.find(a => a.name.endsWith('.dmg'))?.browser_download_url;
@@ -63,7 +65,7 @@ export default function LandingPage({ onLaunch }) {
 
       {/* Hero Section */}
       <header style={S.hero}>
-        <div style={S.badge}>V1.0.12 NOW LIVE</div>
+        <div style={S.badge}>{latestVersion.toUpperCase()} NOW LIVE</div>
         <h1 style={S.title}>Plan your next <span style={{ color: '#4F8EF7' }}>adventure</span> with confidence.</h1>
         <p style={S.subtitle}>The offline-first travel companion for smart itineraries, budget tracking, and secure document storage. No cloud, no tracking, just you and the road.</p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>

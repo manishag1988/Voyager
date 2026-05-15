@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.21] - 2026-05-15
+### Added
+- Made the landing page version badge dynamic (no more hardcoded version numbers).
+
 ## [v1.0.20] - 2026-05-15
 ### Fixed
 - Fixed the PWA release dependency to ensure it builds and uploads instantly after the release is created.
