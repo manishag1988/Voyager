@@ -82,7 +82,6 @@ const TABS = [
   { id:"packing",   label:"Packing",   icon:"🎒" },
   { id:"docs",      label:"Docs",      icon:"🗂️" },
   { id:"tools",     label:"Tools",     icon:"🛠️" },
-  { id:"settings",  label:"Settings",  icon:"⚙️" },
 ];
 
 const RATE_FALLBACK = {
@@ -210,6 +209,7 @@ export default function App() {
   const [activeTrip,  setActiveTrip]  = useLocalStorage("ta_active",   null);
   const [currency,    setCurrency]    = useLocalStorage("ta_currency", "INR ₹");
   const [showNewTrip, setShowNewTrip] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [newTrip,     setNewTrip]     = useState({ name:"", from:"", to:"", destination:"" });
 
   const trip = trips.find(t => t.id === activeTrip);
@@ -242,15 +242,24 @@ export default function App() {
             <span style={{ fontSize:24 }}>🌍</span>
             <span style={{ fontSize:18, fontWeight:800, letterSpacing:"-0.5px" }}>Voyager</span>
           </div>
-          <select value={currency} onChange={e=>setCurrency(e.target.value)} style={{ ...S.input, width:"auto", padding:"4px 8px", fontSize:12 }}>
-            {CURRENCIES.map(c=><option key={c} value={c} style={{color:"#000"}}>{c}</option>)}
-          </select>
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <button onClick={() => setShowSettings(!showSettings)} style={{ background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:8, padding:"6px 10px", color:"#fff", cursor:"pointer", fontSize:14, display:"flex", alignItems:"center", gap:6 }}>
+              ⚙️ {showSettings ? "Close" : "Settings"}
+            </button>
+            <select value={currency} onChange={e=>setCurrency(e.target.value)} style={{ ...S.input, width:"auto", padding:"4px 8px", fontSize:12 }}>
+              {CURRENCIES.map(c=><option key={c} value={c} style={{color:"#000"}}>{c}</option>)}
+            </select>
+          </div>
         </div>
       </header>
 
       <main style={{ maxWidth:840, margin:"0 auto", padding:"1rem 1rem 6rem" }}>
-
-        {/* ── Trip chips ── */}
+        
+        {showSettings ? (
+          <SettingsTab />
+        ) : (
+          <>
+            {/* ── Trip chips ── */}
         <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:14, alignItems:"center" }}>
           {trips.map(t => (
             <button key={t.id} onClick={()=>setActiveTrip(t.id)} style={{ padding:"5px 14px", borderRadius:20, fontSize:13, cursor:"pointer", border:"1px solid rgba(255,255,255,0.2)", background:activeTrip===t.id?"#4F8EF7":"rgba(255,255,255,0.07)", color:"#fff", fontWeight:activeTrip===t.id?700:400 }}>{t.name}</button>
@@ -312,7 +321,6 @@ export default function App() {
             {tab==="packing"   && <PackingTab   trip={trip} updateTrip={updateTrip} />}
             {tab==="docs"      && <DocsTab      trip={trip} updateTrip={updateTrip} />}
             {tab==="tools"     && <ToolsTab     trip={trip} updateTrip={updateTrip} currency={currency} />}
-            {tab==="settings"  && <SettingsTab />}
           </>
         )}
       </main>
