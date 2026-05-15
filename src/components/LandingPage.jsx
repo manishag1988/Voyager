@@ -33,9 +33,20 @@ export default function LandingPage({ onLaunch }) {
       .then(data => {
         if (data.tag_name) setLatestVersion(data.tag_name);
         if (data.assets) {
-          const win = data.assets.find(a => a.name.endsWith('.msi'))?.browser_download_url;
-          const mac = data.assets.find(a => a.name.endsWith('.dmg'))?.browser_download_url;
-          const pwa = data.assets.find(a => a.name.includes('PWA'))?.browser_download_url;
+          const win = data.assets.find(a => 
+            a.name.toLowerCase().endsWith('.msi') || 
+            a.name.toLowerCase().endsWith('.exe')
+          )?.browser_download_url;
+          
+          const mac = data.assets.find(a => 
+            a.name.toLowerCase().endsWith('.dmg') || 
+            (a.name.toLowerCase().includes('macos') && a.name.endsWith('.gz'))
+          )?.browser_download_url;
+          
+          const pwa = data.assets.find(a => 
+            a.name.toLowerCase().includes('pwa')
+          )?.browser_download_url;
+          
           setDownloads({
             win: win || `${repoUrl}/releases/latest`,
             mac: mac || `${repoUrl}/releases/latest`,
