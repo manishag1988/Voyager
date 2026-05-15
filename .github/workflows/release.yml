@@ -54,6 +54,20 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
+      - name: Zip PWA Web App (Ubuntu Only)
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          cd dist
+          tar -czvf ../Voyager_PWA_${{ github.ref_name }}.tar.gz .
+
+      - name: Upload PWA to Release
+        uses: softprops/action-gh-release@v2
+        if: matrix.platform == 'ubuntu-20.04'
+        with:
+          files: Voyager_PWA_${{ github.ref_name }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
