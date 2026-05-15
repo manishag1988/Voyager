@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { getTrialStatus, validateLicenseKey, saveLicenseLocally, deactivateApp, getSavedLicense } from "./lib/licensing";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -81,6 +82,7 @@ const TABS = [
   { id:"packing",   label:"Packing",   icon:"🎒" },
   { id:"docs",      label:"Docs",      icon:"🗂️" },
   { id:"tools",     label:"Tools",     icon:"🛠️" },
+  { id:"settings",  label:"Settings",  icon:"⚙️" },
 ];
 
 const RATE_FALLBACK = {
@@ -310,6 +312,7 @@ export default function App() {
             {tab==="packing"   && <PackingTab   trip={trip} updateTrip={updateTrip} />}
             {tab==="docs"      && <DocsTab      trip={trip} updateTrip={updateTrip} />}
             {tab==="tools"     && <ToolsTab     trip={trip} updateTrip={updateTrip} currency={currency} />}
+            {tab==="settings"  && <SettingsTab />}
           </>
         )}
       </main>
@@ -1292,6 +1295,99 @@ ${(trip.emergencyContacts||[]).length?`<h2>📞 Emergency Contacts</h2><table><t
         <div style={{ fontSize:11, color:"rgba(255,255,255,0.35)", marginTop:10, textAlign:"center" }}>
           PDF: open print dialog → choose "Save as PDF" as printer
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SETTINGS TAB
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function SettingsTab() {
+  const trial = getTrialStatus();
+  const [key, setKey] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const savedLicense = getSavedLicense();
+
+  const handleActivate = async () => {
+    if (!key.trim()) return setError("Enter a valid key");
+    setLoading(true); setError(""); setSuccess("");
+    const res = await validateLicenseKey(key);
+    if (res.valid) {
+      saveLicenseLocally(key);
+      setSuccess("App activated successfully! Thank you for purchasing.");
+      setKey("");
+    } else {
+      setError(res.message || "Invalid license key");
+    }
+    setLoading(false);
+  };
+
+  const handleClear = () => {
+    if(confirm("Are you sure you want to deactivate Voyager on this device?")) {
+      deactivateApp();
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div>
+      <div style={S.card}>
+        <div style={{ fontWeight:700, fontSize:15, marginBottom:12 }}>🔑 Licensing Status</div>
+        
+        {savedLicense ? (
+          <div style={{ background:"rgba(46, 204, 113, 0.15)", border:"1px solid rgba(46, 204, 113, 0.3)", borderRadius:10, padding:"12px 14px", marginBottom:16 }}>
+            <div style={{ color:"#2ECC71", fontWeight:800, fontSize:15, marginBottom:4 }}>✅ Premium Activated</div>
+            <div style={{ fontSize:12, color:"rgba(255,255,255,0.7)", marginBottom:10 }}>License Key: {savedLicense.substring(0,8)}...</div>
+            <button onClick={handleClear} style={{ ...S.btnDanger, fontSize:11 }}>Deactivate License</button>
+          </div>
+        ) : (
+          <div style={{ background:"rgba(243, 156, 18, 0.15)", border:"1px solid rgba(243, 156, 18, 0.3)", borderRadius:10, padding:"12px 14px", marginBottom:16 }}>
+            <div style={{ color:"#F39C12", fontWeight:800, fontSize:15, marginBottom:4 }}>
+              {trial.hasStarted && !trial.isExpired ? `⏳ 7-Day Free Trial (${trial.daysLeft} days left)` : (trial.isExpired ? "❌ Trial Expired" : "❌ Not Activated")}
+            </div>
+            <div style={{ fontSize:12, color:"rgba(255,255,255,0.7)" }}>Upgrade to premium to use Voyager forever without limits.</div>
+          </div>
+        )}
+
+        {!savedLicense && (
+          <div>
+            <div style={{ fontWeight:700, fontSize:13, marginBottom:8, color:"rgba(255,255,255,0.7)" }}>Enter License Key</div>
+            <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
+              <div style={{ flex:1 }}>
+                <input value={key} onChange={e=>setKey(e.target.value.toUpperCase())} placeholder="XXXXX-XXXXX-XXXXX-XXXXX" style={S.input} />
+                {error && <div style={{ color:"#E74C3C", fontSize:11, marginTop:4 }}>{error}</div>}
+                {success && <div style={{ color:"#2ECC71", fontSize:11, marginTop:4 }}>{success}</div>}
+              </div>
+              <button onClick={handleActivate} disabled={loading} style={{ ...S.btnPrimary, padding:"9px 16px" }}>{loading?"...":"Activate"}</button>
+            </div>
+            
+            <div style={{ marginTop:16, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:16 }}>
+              <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", marginBottom:8 }}>Don't have a license key yet?</div>
+              <a href="https://voyager-manish.lemonsqueezy.com/checkout/buy/c69b2362-113d-44f5-93a2-d35fd1fca250" target="_blank" rel="noreferrer" style={{ ...S.btnSecondary, display:"inline-block" }}>
+                Purchase Voyager ($19.99)
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <div style={S.card}>
+        <div style={{ fontWeight:700, fontSize:15, marginBottom:12 }}>⚙️ App Data</div>
+        <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", marginBottom:12 }}>
+          Voyager stores all your data locally on your device. We do not have access to your trip details.
+        </div>
+        <button onClick={()=>{
+          if(confirm("DANGER: This will permanently delete ALL your trips and data from this device. Are you absolutely sure?")) {
+            localStorage.clear();
+            window.location.reload();
+          }
+        }} style={{ ...S.btnDanger, width:"100%" }}>
+          Delete All App Data
+        </button>
       </div>
     </div>
   );

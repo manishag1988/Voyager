@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { isAppActivated, validateLicenseKey, saveLicenseLocally } from "../lib/licensing";
+import { isAppActivated, validateLicenseKey, saveLicenseLocally, startTrial, getTrialStatus } from "../lib/licensing";
 
 export default function LicenseGate({ children }) {
     const [activated, setActivated] = useState(isAppActivated());
@@ -34,6 +34,13 @@ export default function LicenseGate({ children }) {
         return <>{children}</>;
     }
 
+    const trial = getTrialStatus();
+
+    const handleStartTrial = () => {
+        startTrial();
+        setActivated(true);
+    };
+
     // Same styling style used across App.jsx
     const S = {
         input: { background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "12px 14px", color: "#fff", fontSize: 14, outline: "none", width: "100%", boxSizing: "border-box", textAlign: "center", letterSpacing: "1px" },
@@ -46,9 +53,16 @@ export default function LicenseGate({ children }) {
             <div style={{ background: "rgba(15,32,39,0.88)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "2.5rem 2rem", maxWidth: 400, width: "100%", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
                 <div style={{ fontSize: 48, marginBottom: 16 }}>🌍</div>
                 <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Welcome to Voyager</h1>
-                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, marginBottom: 24, lineHeight: 1.5 }}>
-                    Voyager is a premium travel tracking application. Please enter your license key to unlock the app.
-                </p>
+                
+                {trial.hasStarted && trial.isExpired ? (
+                    <p style={{ color: "#F39C12", fontSize: 14, marginBottom: 24, lineHeight: 1.5, fontWeight: 600 }}>
+                        Your 7-day free trial has expired. Please enter a license key to continue using Voyager.
+                    </p>
+                ) : (
+                    <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, marginBottom: 24, lineHeight: 1.5 }}>
+                        Voyager is a premium travel tracking application. Start your free trial or enter your license key.
+                    </p>
+                )}
 
                 <div style={{ marginBottom: 20 }}>
                     <input
@@ -70,6 +84,12 @@ export default function LicenseGate({ children }) {
                 <button onClick={handleActivate} style={S.btnPrimary} disabled={loading}>
                     {loading ? "Validating..." : "Activate App"}
                 </button>
+
+                {!trial.hasStarted && (
+                    <button onClick={handleStartTrial} style={{ ...S.btnPrimary, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                        Start 7-Day Free Trial
+                    </button>
+                )}
 
                 <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.1)" }}>
                     <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginBottom: 12 }}>Don't have a license key yet?</div>

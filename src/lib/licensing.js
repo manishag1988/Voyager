@@ -6,6 +6,8 @@
 
 const LICENSE_KEY_STORAGE = "voyager_license_key";
 const LICENSE_STATUS_STORAGE = "voyager_license_status";
+const TRIAL_START_STORAGE = "voyager_trial_start";
+const TRIAL_DAYS = 7;
 
 // Replace this with your actual Lemon Squeezy API URL and Store ID when configured
 const LEMON_SQUEEZY_ACTIVATE_URL = "https://api.lemonsqueezy.com/v1/licenses/validate";
@@ -48,11 +50,39 @@ export function getSavedLicense() {
   return localStorage.getItem(LICENSE_KEY_STORAGE);
 }
 
+export function startTrial() {
+  if (!localStorage.getItem(TRIAL_START_STORAGE)) {
+    localStorage.setItem(TRIAL_START_STORAGE, new Date().toISOString());
+  }
+}
+
+export function getTrialStatus() {
+  const startStr = localStorage.getItem(TRIAL_START_STORAGE);
+  if (!startStr) return { hasStarted: false, daysLeft: TRIAL_DAYS, isExpired: false };
+  
+  const start = new Date(startStr);
+  const now = new Date();
+  const diffTime = now - start;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  const daysLeft = Math.max(0, TRIAL_DAYS - diffDays);
+  return {
+    hasStarted: true,
+    daysLeft,
+    isExpired: daysLeft <= 0
+  };
+}
+
 export function isAppActivated() {
-  return localStorage.getItem(LICENSE_STATUS_STORAGE) === "active";
+  const isPremium = localStorage.getItem(LICENSE_STATUS_STORAGE) === "active";
+  if (isPremium) return true;
+  
+  const trial = getTrialStatus();
+  return trial.hasStarted && !trial.isExpired;
 }
 
 export function deactivateApp() {
   localStorage.removeItem(LICENSE_KEY_STORAGE);
   localStorage.removeItem(LICENSE_STATUS_STORAGE);
+  // We explicitly do NOT clear the trial start date so users can't abuse the trial by logging out
 }
