@@ -68,7 +68,7 @@ jobs:
           releaseName: 'Voyager App v__VERSION__'
           releaseBody: 'Latest changes from CHANGELOG.md'
           bodyPath: RELEASENOTES.md
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
 
