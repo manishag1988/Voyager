@@ -6,7 +6,32 @@ on:
       - 'v*' # This triggers the workflow when you push a tag like 'v1.0.0'
 
 jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract Release Notes
+        shell: bash
+        run: |
+          awk "/## \[${{ github.ref_name }}\]/{flag=1;next}/## \[/{flag=0}flag" CHANGELOG.md > RELEASENOTES.md
+      - name: Create Release
+        id: create-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Voyager App ${{ github.ref_name }}
+          body_path: RELEASENOTES.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   release:
+    needs: create-release
     permissions:
       contents: write # Needed to create the GitHub release
     strategy:
@@ -54,20 +79,16 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      - name: Extract Release Notes
-        shell: bash
-        run: |
-          awk "/## \[${{ github.ref_name }}\]/{flag=1;next}/## \[/{flag=0}flag" CHANGELOG.md > RELEASENOTES.md
+      - name: Build Frontend
+        run: npm run build
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # The action automatically replaces __VERSION__ with the app version
-          releaseName: 'Voyager App v__VERSION__'
-          releaseBody: 'Latest changes from CHANGELOG.md'
-          bodyPath: RELEASENOTES.md
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Voyager App ${{ github.ref_name }}'
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
@@ -101,11 +122,6 @@ jobs:
         run: |
           cd dist
           tar -czvf ../Voyager_PWA_${{ github.ref_name }}.tar.gz .
-
-      - name: Extract Release Notes
-        shell: bash
-        run: |
-          awk "/## \[${{ github.ref_name }}\]/{flag=1;next}/## \[/{flag=0}flag" CHANGELOG.md > RELEASENOTES.md
 
       - name: Upload PWA to Release
         uses: softprops/action-gh-release@v2
