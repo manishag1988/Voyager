@@ -2,11 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v1.0.13] - 2026-05-15
-### Added
-- Launched a premium marketing landing page for the web version.
-- Implemented smart redirection: New web users see the landing page, while desktop and existing users go straight to the app.
-- Added pricing plans, feature grids, and download links to the homepage.
+## [v1.0.18] - 2026-05-15
+### Fixed
+- Resolved a race condition in GitHub Actions that caused "Resource not accessible" errors.
+- Improved release reliability by sequencing desktop and PWA builds.
+
+## [v1.0.17] - 2026-05-15
+### Changed
+- Refactored the app to be "Standalone" with relative paths (`./`).
+- The app can now be hosted on any provider (Netlify, Vercel, etc.) out of the box.
 
 ## [v1.0.10] - 2026-05-15
 ### Fixed
