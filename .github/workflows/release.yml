@@ -54,6 +54,11 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
+      - name: Extract Release Notes
+        shell: bash
+        run: |
+          awk "/## \[${{ github.ref_name }}\]/{flag=1;next}/## \[/{flag=0}flag" CHANGELOG.md > RELEASENOTES.md
+
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
@@ -61,7 +66,8 @@ jobs:
         with:
           tagName: app-v__VERSION__ # The action automatically replaces __VERSION__ with the app version
           releaseName: 'Voyager App v__VERSION__'
-          releaseBody: 'See the attached assets for the latest installers.'
+          releaseBody: 'Latest changes from CHANGELOG.md'
+          bodyPath: RELEASENOTES.md
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
@@ -95,10 +101,16 @@ jobs:
           cd dist
           tar -czvf ../Voyager_PWA_${{ github.ref_name }}.tar.gz .
 
+      - name: Extract Release Notes
+        shell: bash
+        run: |
+          awk "/## \[${{ github.ref_name }}\]/{flag=1;next}/## \[/{flag=0}flag" CHANGELOG.md > RELEASENOTES.md
+
       - name: Upload PWA to Release
         uses: softprops/action-gh-release@v2
         with:
           files: Voyager_PWA_${{ github.ref_name }}.tar.gz
+          body_path: RELEASENOTES.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
