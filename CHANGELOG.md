@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.20] - 2026-05-15
+### Fixed
+- Fixed the PWA release dependency to ensure it builds and uploads instantly after the release is created.
+
 ## [v1.0.18] - 2026-05-15
 ### Fixed
 - Resolved a race condition in GitHub Actions that caused "Resource not accessible" errors.

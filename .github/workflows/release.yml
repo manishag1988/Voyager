@@ -94,7 +94,7 @@ jobs:
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
 
   pwa-release:
-    needs: release
+    needs: create-release
     permissions:
       contents: write
     runs-on: ubuntu-latest
