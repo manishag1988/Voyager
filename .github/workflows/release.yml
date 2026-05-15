@@ -54,20 +54,6 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
-      - name: Zip PWA Web App (Ubuntu Only)
-        if: matrix.platform == 'ubuntu-20.04'
-        run: |
-          cd dist
-          tar -czvf ../Voyager_PWA_${{ github.ref_name }}.tar.gz .
-
-      - name: Upload PWA to Release
-        uses: softprops/action-gh-release@v2
-        if: matrix.platform == 'ubuntu-20.04'
-        with:
-          files: Voyager_PWA_${{ github.ref_name }}.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
@@ -79,3 +65,40 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
+
+  pwa-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Sync Version from Git Tag
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          node -e "const fs = require('fs'); const p = JSON.parse(fs.readFileSync('package.json')); p.version = '$VERSION'; fs.writeFileSync('package.json', JSON.stringify(p, null, 2)); const t = JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json')); t.package.version = '$VERSION'; fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(t, null, 2));"
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Zip PWA Web App
+        run: |
+          cd dist
+          tar -czvf ../Voyager_PWA_${{ github.ref_name }}.tar.gz .
+
+      - name: Upload PWA to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Voyager_PWA_${{ github.ref_name }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
