@@ -94,7 +94,7 @@ export default function LicenseGate({ children }) {
                 <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.1)" }}>
                     <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginBottom: 12 }}>Don't have a license key yet?</div>
                     <a href={buyLink} target="_blank" rel="noreferrer" style={S.btnSecondary}>
-                        Purchase Voyager ($19.99)
+                        Purchase Voyager (₹199 / year)
                     </a>
                 </div>
 

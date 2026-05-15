@@ -1384,7 +1384,7 @@ function SettingsTab() {
             <div style={{ marginTop:16, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:16 }}>
               <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", marginBottom:8 }}>Don't have a license key yet?</div>
               <a href="https://voyager-manish.lemonsqueezy.com/checkout/buy/c69b2362-113d-44f5-93a2-d35fd1fca250" target="_blank" rel="noreferrer" style={{ ...S.btnSecondary, display:"inline-block" }}>
-                Purchase Voyager ($19.99)
+                Purchase Voyager (₹199 / year)
               </a>
             </div>
           </div>

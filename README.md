@@ -5,6 +5,7 @@ Voyager is a premium, privacy-focused travel companion built for adventurers who
 [![Release](https://img.shields.io/github/v/tag/manishag1988/Voyager?label=latest)](https://github.com/manishag1988/Voyager/releases)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux%20%7C%20PWA-blue)](https://github.com/manishag1988/Voyager/releases)
 [![License](https://img.shields.io/badge/license-Premium-gold)](https://voyager-manish.lemonsqueezy.com/checkout/buy/c69b2362-113d-44f5-93a2-d35fd1fca250)
+[![Price](https://img.shields.io/badge/price-%E2%82%B9199%2Fyear-green)](https://voyager-manish.lemonsqueezy.com/checkout/buy/c69b2362-113d-44f5-93a2-d35fd1fca250)
 
 ## ✨ Features
 

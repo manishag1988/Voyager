@@ -76,15 +76,15 @@ export default function LandingPage({ onLaunch }) {
           <div style={S.pricingCard}>
             <div style={{ position: 'absolute', top: '20px', right: '-35px', background: '#4F8EF7', color: '#fff', padding: '5px 40px', transform: 'rotate(45deg)', fontSize: '12px', fontWeight: 'bold' }}>BEST VALUE</div>
             <h3 style={{ fontSize: '24px', fontWeight: '800' }}>Voyager Premium</h3>
-            <div style={{ fontSize: '48px', fontWeight: '900', margin: '1.5rem 0' }}>$19.99<span style={{ fontSize: '16px', fontWeight: '400', color: 'rgba(255,255,255,0.5)' }}> / one-time</span></div>
+            <div style={{ fontSize: '48px', fontWeight: '900', margin: '1.5rem 0' }}>₹199<span style={{ fontSize: '16px', fontWeight: '400', color: 'rgba(255,255,255,0.5)' }}> / year</span></div>
             <ul style={{ listArray: 'none', padding: '0', textAlign: 'left', margin: '0 auto 2rem', maxWidth: '250px', color: 'rgba(255,255,255,0.8)', fontSize: '15px' }}>
-              <li style={{ marginBottom: '12px' }}>✅ Lifetime Access</li>
+              <li style={{ marginBottom: '12px' }}>✅ Full Feature Access</li>
               <li style={{ marginBottom: '12px' }}>✅ 7-Day Free Trial</li>
               <li style={{ marginBottom: '12px' }}>✅ Unlimited Trips</li>
               <li style={{ marginBottom: '12px' }}>✅ All Platforms (Win/Mac/PWA)</li>
               <li style={{ marginBottom: '12px' }}>✅ Privacy First (Offline)</li>
             </ul>
-            <a href={buyLink} target="_blank" rel="noreferrer" style={{ ...S.btnPrimary, display: 'block', textDecoration: 'none' }}>Get Lifetime Access</a>
+            <a href={buyLink} target="_blank" rel="noreferrer" style={{ ...S.btnPrimary, display: 'block', textDecoration: 'none' }}>Start Subscription</a>
           </div>
         </div>
       </section>
