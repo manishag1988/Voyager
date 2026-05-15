@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.0.24] - 2026-05-15
+### Fixed
+- Fixed UI priority: The marketing landing page is now accessible to the public, and the paywall only appears when clicking "Launch App".
+
 ## [v1.0.21] - 2026-05-15
 ### Added
 - Made the landing page version badge dynamic (no more hardcoded version numbers).

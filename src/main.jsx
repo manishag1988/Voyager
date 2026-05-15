@@ -6,8 +6,6 @@ import LicenseGate from './components/LicenseGate.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <LicenseGate>
-      <App />
-    </LicenseGate>
+    <App />
   </React.StrictMode>
 )

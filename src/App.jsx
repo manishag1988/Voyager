@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { getTrialStatus, validateLicenseKey, saveLicenseLocally, deactivateApp, getSavedLicense } from "./lib/licensing";
 import LandingPage from "./components/LandingPage";
+import LicenseGate from "./components/LicenseGate";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -239,7 +240,8 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#0f2027 0%,#203a43 55%,#2c5364 100%)", color:"#fff" }}>
+    <LicenseGate>
+      <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#0f2027 0%,#203a43 55%,#2c5364 100%)", color:"#fff" }}>
 
       {/* ── Header ── */}
       <header style={{ position:"sticky", top:0, zIndex:100, background:"rgba(15,32,39,0.88)", backdropFilter:"blur(14px)", borderBottom:"1px solid rgba(255,255,255,0.09)", padding:"0 1rem" }}>
@@ -334,6 +336,7 @@ export default function App() {
       </main>
       <InstallBanner />
     </div>
+    </LicenseGate>
   );
 }
 
