@@ -9,6 +9,14 @@ const LICENSE_STATUS_STORAGE = "voyager_license_status";
 const TRIAL_START_STORAGE = "voyager_trial_start";
 const TRIAL_DAYS = 7;
 
+const ADMIN_KEYS = [
+    "VOY-ADM-9922-XXXX",
+    "VOY-ADM-1100-YYYY",
+    "VOY-ADM-7788-ZZZZ",
+    "VOY-ADM-4455-AAAA",
+    "VOY-ADM-2233-BBBB"
+];
+
 // Replace this with your actual Lemon Squeezy API URL and Store ID when configured
 const LEMON_SQUEEZY_ACTIVATE_URL = "https://api.lemonsqueezy.com/v1/licenses/validate";
 
@@ -18,7 +26,7 @@ export async function validateLicenseKey(licenseKey) {
     // If you haven't set up the store yet, this will fail or return mock data.
     
     // For development/demonstration purposes before you actually hook up the Lemon Squeezy store:
-    if (licenseKey.trim() === "TEST-KEY-123") {
+    if (ADMIN_KEYS.includes(licenseKey.trim())) {
       return { valid: true };
     }
 

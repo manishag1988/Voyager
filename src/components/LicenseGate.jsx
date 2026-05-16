@@ -97,10 +97,6 @@ export default function LicenseGate({ children }) {
                         Purchase Voyager (₹199 / year)
                     </a>
                 </div>
-
-                <div style={{ marginTop: 16, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
-                    Tip: You can use TEST-KEY-123 for local testing.
-                </div>
             </div>
         </div>
     );
